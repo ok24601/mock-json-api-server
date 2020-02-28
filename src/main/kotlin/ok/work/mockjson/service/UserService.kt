@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct
 
 data class User(val clientId: String, val apis: MutableList<Api>?)
 
-data class Api(val endpoint: String, val method: HttpMethod, val body: String?)
+data class Api(val endpoint: String, val method: HttpMethod, val responseBody: String?)
 
 @Service
 class UserService {

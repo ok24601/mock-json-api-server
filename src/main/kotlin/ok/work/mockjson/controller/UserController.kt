@@ -13,12 +13,12 @@ class UserController {
     @Autowired
     lateinit var userService: UserService
 
-    @PostMapping
+    @PostMapping("/createUser")
     fun createUser(user: User) {
         userService.addUser(user)
     }
 
-    @PostMapping("/createUser")
+    @PostMapping("/createApi")
     fun addApi(@RequestBody api: Api, @RequestHeader userId: String) {
         userService.addApiToUser(api, userId)
     }
