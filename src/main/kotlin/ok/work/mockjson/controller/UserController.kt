@@ -22,4 +22,9 @@ class UserController {
     fun addApi(@RequestBody api: Api, @RequestHeader userId: String) {
         userService.addApiToUser(api, userId)
     }
+
+    @GetMapping("/{userId}")
+    fun getUser(@PathVariable("userId") userId: String): User {
+        return userService.getUser(userId)
+    }
 }

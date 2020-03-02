@@ -4,6 +4,7 @@ import ok.work.mockjson.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import java.lang.RuntimeException
 import javax.servlet.http.HttpServletRequest
 
 @RestController
@@ -19,17 +20,17 @@ class ApiController {
     }
 
     @PostMapping("/{userId}/**", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun handlePOST(@PathVariable("userId") userId: String, @RequestBody body: String, request: HttpServletRequest): String? {
+    fun handlePOST(@PathVariable("userId") userId: String, @RequestBody body: String?, request: HttpServletRequest): String? {
         return handleApi(userId, request)
     }
 
     @PutMapping("/{userId}/**", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun handlePUT(@PathVariable("userId") userId: String, @RequestBody body: String, request: HttpServletRequest): String? {
+    fun handlePUT(@PathVariable("userId") userId: String, @RequestBody body: String?, request: HttpServletRequest): String? {
         return handleApi(userId, request)
     }
 
     @DeleteMapping("/{userId}/**", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun handleDELETE(@PathVariable("userId") userId: String, @RequestBody body: String, request: HttpServletRequest): String? {
+    fun handleDELETE(@PathVariable("userId") userId: String, @RequestBody body: String?, request: HttpServletRequest): String? {
         return handleApi(userId, request)
     }
 
@@ -38,7 +39,7 @@ class ApiController {
 
         val path = request.requestURI.toString().replace("${request.contextPath}/api/$userId", "")
 
-        return user.apis!!.find { api -> api.endpoint.equals(path) }?.responseBody ?: ""
+        return user.apis!!.find { api -> api.endpoint.equals(path) }?.responseBody ?: throw RuntimeException("No API defined for $path")
     }
 
 }
