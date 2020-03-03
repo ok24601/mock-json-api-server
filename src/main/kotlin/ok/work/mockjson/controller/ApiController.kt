@@ -1,10 +1,9 @@
 package ok.work.mockjson.controller
 
-import ok.work.mockjson.service.UserService
+import ok.work.mockjson.service.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-import java.lang.RuntimeException
 import javax.servlet.http.HttpServletRequest
 
 @RestController
@@ -16,7 +15,7 @@ class ApiController {
 
     @GetMapping("/{userId}/**", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun handleGET(@PathVariable("userId") userId: String, request: HttpServletRequest): String? {
-        return handleApi(userId, request);
+        return handleApi(userId, request)
     }
 
     @PostMapping("/{userId}/**", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -39,7 +38,13 @@ class ApiController {
 
         val path = request.requestURI.toString().replace("${request.contextPath}/api/$userId", "")
 
-        return user.apis!!.find { api -> api.endpoint.equals(path) }?.responseBody ?: throw RuntimeException("No API defined for $path")
+        val api = user.apis!!.find { api -> matchesTemplateUrl(api.endpoint, path) }
+        val payload = api
+               ?.responseBody
+                ?: throw RuntimeException("No API defined for $path")
+
+        return putValuesInPayload(payload, getValuesFromUrl(api.endpoint, path))
+
     }
 
 }
