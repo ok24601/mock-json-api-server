@@ -14,8 +14,8 @@ class UserController {
     lateinit var userService: UserService
 
     @PostMapping("/createUser")
-    fun createUser(user: User) {
-        userService.addUser(user)
+    fun createUser(): User {
+        return userService.generateUser()
     }
 
     @PostMapping("/createApi")

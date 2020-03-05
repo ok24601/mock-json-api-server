@@ -4,6 +4,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.*
 import javax.annotation.PostConstruct
 
 data class User(val clientId: String, val apis: MutableList<Api>?)
@@ -42,6 +43,12 @@ class UserService {
            apis?.add(api)
         }
         return
+    }
+
+    fun generateUser(): User {
+        val user = User(UUID.randomUUID().toString(), mutableListOf())
+        addUser(user)
+        return user
     }
 
 }
