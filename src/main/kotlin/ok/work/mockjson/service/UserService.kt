@@ -1,12 +1,9 @@
 package ok.work.mockjson.service
 
 import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.util.MultiValueMap
 import java.time.LocalDateTime
 import java.util.*
-import javax.annotation.PostConstruct
 
 data class User(val clientId: String, val apis: MutableList<Api>?)
 
@@ -21,12 +18,6 @@ data class Api(val name: String, val endpoint: String, val status: String,
 class UserService {
 
     val userRepository: MutableMap<String, User> = mutableMapOf()
-
-    @PostConstruct
-    fun init() {
-        val list = mutableListOf<Api>()
-        userRepository["okTestDemo"] = User("okTestDemo", list)
-    }
 
     fun addUser(u: User) {
         userRepository[u.clientId] = u
