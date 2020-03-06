@@ -1,5 +1,7 @@
 package ok.work.mockjson.service
 
+import javax.servlet.http.HttpServletRequest
+
 
 fun matchesTemplateUrl(template: String, url: String): Boolean {
     val templateSplit = template.split("/")
@@ -29,7 +31,7 @@ fun getValuesFromUrl(template: String, url: String): Map<String, String> {
     return values
 }
 
-fun putValuesInPayload(payload: String, values: Map<String, String>): String {
+fun putValuesInPayload(payload: String, request: HttpServletRequest, values: Map<String, String>): String {
     var result = payload
     values.forEach { (k, v) ->
         result = payload.replace(k, v)

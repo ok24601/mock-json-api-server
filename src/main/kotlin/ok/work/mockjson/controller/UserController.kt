@@ -4,6 +4,7 @@ import ok.work.mockjson.service.Api
 import ok.work.mockjson.service.User
 import ok.work.mockjson.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -18,7 +19,7 @@ class UserController {
         return userService.generateUser()
     }
 
-    @PostMapping("/createApi")
+    @PostMapping("/createApi", consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun addApi(@RequestBody api: Api, @RequestHeader userId: String) {
         userService.addApiToUser(api, userId)
     }
