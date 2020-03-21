@@ -4,12 +4,13 @@ import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
+import javax.validation.constraints.NotBlank
 
 data class User(val clientId: String, val apis: MutableList<Api>?)
 
 data class Header(val key: String, val value: String)
 
-data class Api(val name: String, val endpoint: String, val status: String,
+data class Api(@NotBlank val name: String, @NotBlank val endpoint: String, @NotBlank val status: String,
                val method: HttpMethod, val responseBody: String?,
                val responseHeaders: List<Header>?, val templates: String?,
                val date: LocalDateTime?)
@@ -31,8 +32,9 @@ class UserService {
         val apis = userRepository[userId]!!.apis
         if (apis?.filter { a -> matchesTemplateUrl(a.endpoint, api.endpoint) }.isNullOrEmpty()) {
             apis?.add(api)
+        } else {
+            throw java.lang.RuntimeException("API already exist")
         }
-        return
     }
 
     fun generateUser(): User {
